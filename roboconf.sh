@@ -48,3 +48,42 @@ function roboconf-passenger {
   mkdir -p tmp
   touch tmp/restart.txt
 }
+
+function set_heroku_vars_changed {
+  current_configs=$(heroku config --app "$app")
+
+  heroku_vars_changed=false
+  while read line
+  do
+    new_consts=(${line//=/ })
+    new_key=${new_consts[0]}
+    new_value=${new_consts[1]}
+    new_value=`sed -E -e "s/(^'|'$)//g" <<< $new_value` # strip leading/trailing 's
+    new_value=`sed -E -e "s/(^\"|\"$)//g" <<< $new_value` # strip leading/trailing "s
+    if [[ $new_key =~ 'HEROKU_CONFIG_ADD_CONSTANTS' ]]; then
+      continue 
+    fi  
+    if [[ $current_configs =~ $new_key ]]; then
+      echo "$new_key is present"
+    else
+      heroku_vars_changed=true
+      echo "$new_key is not present"
+    fi  
+    if [[ $current_configs =~ $new_value ]]; then
+      echo "$new_value is present"
+    else
+      heroku_vars_changed=true
+      echo "$new_value is not present"
+    fi
+  done < $HEROKU_CONSTANTS
+}
+
+function run_heroku_config_if_settings_changed {
+  set_heroku_vars_changed
+  if ! $heroku_vars_changed; then
+    echo "Skipping 'heroku config:add' because Heroku variables unchanged"
+  else
+    echo "Running 'heroku config:add' because Heroku variables have changed"
+    heroku config:add $HEROKU_CONFIG_ADD_CONSTANTS --app "$app"
+  fi
+}
