@@ -50,7 +50,7 @@ function roboconf-passenger {
 }
 
 # "private" function called by run_heroku_config_if_settings_changed
-function set_heroku_vars_changed {
+function detect_heroku_vars_changed {
   current_configs=$(heroku config --app "$app")
 
   heroku_vars_changed=false
@@ -75,7 +75,7 @@ function set_heroku_vars_changed {
 
 # runs 'heroku config:add' only if the Heroku configuration settings have changed
 function run_heroku_config_if_settings_changed {
-  set_heroku_vars_changed
+  detect_heroku_vars_changed
   if ! $heroku_vars_changed; then
     echo "Skipping 'heroku config:add' because Heroku variables unchanged"
   else
