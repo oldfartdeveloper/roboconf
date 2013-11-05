@@ -49,6 +49,7 @@ function roboconf-passenger {
   touch tmp/restart.txt
 }
 
+# "private" function called by run_heroku_config_if_settings_changed
 function set_heroku_vars_changed {
   current_configs=$(heroku config --app "$app")
 
@@ -72,6 +73,7 @@ function set_heroku_vars_changed {
   done < $HEROKU_CONSTANTS
 }
 
+# runs 'heroku config:add' only if the Heroku configuration settings have changed
 function run_heroku_config_if_settings_changed {
   set_heroku_vars_changed
   if ! $heroku_vars_changed; then
