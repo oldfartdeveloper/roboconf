@@ -49,7 +49,10 @@ function roboconf-passenger {
   touch tmp/restart.txt
 }
 
-# "private" function called by run_heroku_config_if_settings_changed
+# "Private" function called by run_heroku_config_if_settings_changed.
+# Sets the heroku_vars_changed variable to true/false depending on whether
+# the Heroku environment variables in $HEROKU_CONSTANTS differ from what
+# is currently configured for the Heroku app.
 function detect_heroku_vars_changed {
   current_configs=$(heroku config --app "$app")
 
