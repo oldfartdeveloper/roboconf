@@ -48,3 +48,41 @@ function roboconf-passenger {
   mkdir -p tmp
   touch tmp/restart.txt
 }
+
+# "Private" function called by run_heroku_config_if_settings_changed.
+# Sets the heroku_vars_changed variable to true/false depending on whether
+# the Heroku environment variables in $HEROKU_CONSTANTS differ from what
+# is currently configured for the Heroku app.
+function detect_heroku_vars_changed {
+  current_configs=$(heroku config --app "$app")
+
+  heroku_vars_changed=false
+  while read line
+  do
+    new_consts=(${line//=/ })
+    new_key=${new_consts[0]}
+    new_value=${new_consts[1]}
+    new_value=`sed -E -e "s/(^'|'$)//g" <<< $new_value` # strip leading/trailing 's
+    new_value=`sed -E -e "s/(^\"|\"$)//g" <<< $new_value` # strip leading/trailing "s
+    if [[ $new_key =~ 'HEROKU_CONFIG_ADD_CONSTANTS' ]]; then
+      continue # ignore this script-only variable; it's not a Heroku config setting
+    fi  
+    if [[ $current_configs =~ $new_key && $current_configs =~ $new_value ]]; then
+      echo "Key '$new_key' already has value '$new_value'"
+    else
+      heroku_vars_changed=true
+      echo "Key '$new_key' will be set to value '$new_value'"
+    fi  
+  done < $HEROKU_CONSTANTS
+}
+
+# runs 'heroku config:add' only if the Heroku configuration settings have changed
+function run_heroku_config_if_settings_changed {
+  detect_heroku_vars_changed
+  if ! $heroku_vars_changed; then
+    echo "Skipping 'heroku config:add' because Heroku variables unchanged"
+  else
+    echo "Running 'heroku config:add' because Heroku variables have changed"
+    heroku config:add $HEROKU_CONFIG_ADD_CONSTANTS --app "$app"
+  fi
+}
