@@ -63,7 +63,7 @@ function set_heroku_vars_changed {
     if [[ $new_key =~ 'HEROKU_CONFIG_ADD_CONSTANTS' ]]; then
       continue # ignore this script-only variable; it's not a Heroku config setting
     fi  
-    if [[ $current_configs =~ $new_key -a $current_configs =~ $new_value ]]; then
+    if [[ $current_configs =~ $new_key && $current_configs =~ $new_value ]]; then
       echo "Key '$new_key' already has value '$new_value'"
     else
       heroku_vars_changed=true
