@@ -99,14 +99,14 @@ function detect_heroku_vars_changed {
   done < $HEROKU_CONSTANTS
 }
 
-# runs 'heroku config:add' only if the Heroku configuration settings have changed
+# runs 'heroku config:set' only if the Heroku configuration settings have changed
 function run_heroku_config_if_settings_changed {
   detect_heroku_vars_changed
   if ! $heroku_vars_changed; then
     echo "Skipping 'heroku config:add' because Heroku variables unchanged"
   else
     echo "Running 'heroku config:add' because Heroku variables have changed"
-    heroku config:add $HEROKU_CONFIG_ADD_CONSTANTS --app "$app"
+    heroku config:set $HEROKU_CONFIG_ADD_CONSTANTS --app "$app"
   fi
 }
 
