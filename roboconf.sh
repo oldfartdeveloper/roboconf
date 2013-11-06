@@ -49,6 +49,11 @@ function roboconf-passenger {
   touch tmp/restart.txt
 }
 
+function echo_cmd {
+  echo "\$ $*"
+  $*  
+}
+
 # Loads $HEROKU_CONSTANTS or exits
 function load_heroku_constants {
   if [ -z "$HEROKU_CONSTANTS" ]; then
