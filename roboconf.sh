@@ -111,7 +111,7 @@ function run_heroku_config_if_settings_changed {
   fi
 }
 
-function show_prep_release_usage {
+function show_prep_release_usage_and_exit {
   cat <<EOF
 Usage: $0 heroku-app-name
 
@@ -123,7 +123,7 @@ EOF
   exit 1
 }
 
-function show_release_usage {
+function show_release_usage_and_exit {
   cat <<EOF
 Usage: $0 heroku-app-name
 
