@@ -117,8 +117,8 @@ Usage: $0 heroku-app-name
 
 Function: Release app to heroku-app-name.herokuapp.com as staging/testing environment before a release.
 
-Example: $0 hedgeye-cedar-marketing
-Example: $0 hedgeye-reader
+Example: $0 hedgeye-cedar-smarketing
+Example: $0 hedgeye-smailroom
 EOF
   exit 1
 }
@@ -129,8 +129,8 @@ Usage: $0 heroku-app-name
 
 Function: Release app to heroku-app-name.herokuapp.com as production environment.
 
-Example: $0 hedgeye-cedar-smarketing
-Example: $0 hedgeye-smailroom
+Example: $0 hedgeye-cedar-marketing
+Example: $0 hedgeye-reader
 EOF
   exit 1
 }
