@@ -57,8 +57,8 @@ function echo_cmd {
 # Loads $HEROKU_CONSTANTS or exits
 function load_heroku_constants {
   if [ -z "$HEROKU_CONSTANTS" ]; then
-    echo "Error: '\$HEROKU_CONSTANTS' is undefined"
-    echo "It should hold key=value pairs of Heroku configuration settings"
+    echo "Error: \$HEROKU_CONSTANTS is undefined"
+    echo "\$HEROKU_CONSTANTS should reference a file holding key=value pairs of Heroku configuration settings"
     exit 1
   elif [[ -f $HEROKU_CONSTANTS ]]; then
     . $HEROKU_CONSTANTS
