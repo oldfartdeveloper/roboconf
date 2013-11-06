@@ -110,3 +110,27 @@ function run_heroku_config_if_settings_changed {
     heroku config:add $HEROKU_CONFIG_ADD_CONSTANTS --app "$app"
   fi
 }
+
+function show_prep_release_usage_and_exit {
+  cat <<EOF
+Usage: $0 heroku-app-name
+
+Function: Release app to heroku-app-name.herokuapp.com as staging/testing environment before a release.
+
+Example: $0 hedgeye-cedar-marketing
+Example: $0 hedgeye-reader
+EOF
+  exit 1
+}
+
+function show_release_usage_and_exit {
+  cat <<EOF
+Usage: $0 heroku-app-name
+
+Function: Release app to heroku-app-name.herokuapp.com as production environment.
+
+Example: $0 hedgeye-cedar-smarketing
+Example: $0 hedgeye-smailroom
+EOF
+  exit 1
+}
