@@ -85,26 +85,12 @@ function detect_heroku_vars_changed {
   do
     new_key="$( cut -d '=' -f 1 <<< $line )"
     new_value="$( cut -d '=' -f 2- <<< $line )"
-    #sep='='
-    #case $line in
-    #  (*"$sep"*)
-    #    new_key=${s%%"$sep"*}
-    #    new_value=${s#*"$sep"}
-    #    ;;
-    #  (*)
-    #    new_key=$s
-    #    new_value=
-    #    ;;
-    #esac
-    #new_consts=(${line//=/ })
-    #new_key=${new_consts[0]}
-    #new_value=${new_consts[1]}
     new_value=`sed -E -e "s/(^'|'$)//g" <<< $new_value` # strip leading/trailing 's
     new_value=`sed -E -e "s/(^\"|\"$)//g" <<< $new_value` # strip leading/trailing "s
     if [[ $new_key =~ 'HEROKU_CONFIG_ADD_CONSTANTS' ]]; then
       continue # ignore this script-only variable; it's not a Heroku config setting
     fi  
-    if [[ $current_configs =~ $new_key && $current_configs =~ $new_value ]]; then
+    if [[ "$current_configs" == *"$new_key"* && "$current_configs" == *"$new_value"* ]]; then
       echo "Key '$new_key' already has value '$new_value'"
     else
       heroku_vars_changed=true
