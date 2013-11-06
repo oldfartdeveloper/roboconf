@@ -109,6 +109,7 @@ function detect_heroku_vars_changed {
     else
       heroku_vars_changed=true
       echo "Key '$new_key' will be set to value '$new_value'"
+      echo "because it is not in $current_configs"
     fi  
   done < $HEROKU_CONSTANTS
 }
