@@ -83,9 +83,20 @@ function detect_heroku_vars_changed {
   heroku_vars_changed=false
   while read line
   do
-    new_consts=(${line//=/ })
-    new_key=${new_consts[0]}
-    new_value=${new_consts[1]}
+    sep='='
+    case $line in
+      (*"$sep"*)
+        new_key=${s%%"$sep"*}
+        new_value=${s#*"$sep"}
+        ;;
+      (*)
+        new_key=$s
+        new_value=
+        ;;
+    esac
+    #new_consts=(${line//=/ })
+    #new_key=${new_consts[0]}
+    #new_value=${new_consts[1]}
     new_value=`sed -E -e "s/(^'|'$)//g" <<< $new_value` # strip leading/trailing 's
     new_value=`sed -E -e "s/(^\"|\"$)//g" <<< $new_value` # strip leading/trailing "s
     if [[ $new_key =~ 'HEROKU_CONFIG_ADD_CONSTANTS' ]]; then
