@@ -51,7 +51,7 @@ function roboconf-passenger {
 
 # Loads $HEROKU_CONSTANTS or exits
 function load_heroku_constants {
-  if [ -z "$HEROKU_CONSTANTS" ];
+  if [ -z "$HEROKU_CONSTANTS" ]; then
     echo "Error: '\$HEROKU_CONSTANTS' is undefined"
     echo "It should hold key=value pairs of Heroku configuration settings"
     exit 1
