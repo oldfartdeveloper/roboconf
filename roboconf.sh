@@ -61,7 +61,7 @@ function load_heroku_constants {
     echo "\$HEROKU_CONSTANTS should reference a file holding key=value pairs of Heroku configuration settings"
     exit 1
   elif [[ -f $HEROKU_CONSTANTS ]]; then
-    . $HEROKU_CONSTANTS
+    source $HEROKU_CONSTANTS
   else
     echo "Error: Failed to find $HEROKU_CONSTANTS"
     exit 1
