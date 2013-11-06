@@ -83,17 +83,19 @@ function detect_heroku_vars_changed {
   heroku_vars_changed=false
   while read line
   do
-    sep='='
-    case $line in
-      (*"$sep"*)
-        new_key=${s%%"$sep"*}
-        new_value=${s#*"$sep"}
-        ;;
-      (*)
-        new_key=$s
-        new_value=
-        ;;
-    esac
+    new_key="$( cut -d '=' -f 1 <<< $line )"
+    new_value="$( cut -d '=' -f 2- <<< $line )"
+    #sep='='
+    #case $line in
+    #  (*"$sep"*)
+    #    new_key=${s%%"$sep"*}
+    #    new_value=${s#*"$sep"}
+    #    ;;
+    #  (*)
+    #    new_key=$s
+    #    new_value=
+    #    ;;
+    #esac
     #new_consts=(${line//=/ })
     #new_key=${new_consts[0]}
     #new_value=${new_consts[1]}
