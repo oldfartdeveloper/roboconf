@@ -55,7 +55,7 @@ function echo_cmd {
 }
 
 function fire_up_heroku_app {
-  curl "http://$app.herokuapp.com/" &> /dev/null
+  curl "http://${app}.herokuapp.com/" &> /dev/null
 }
 
 # Loads $HEROKU_CONSTANTS or exits
