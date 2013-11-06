@@ -78,6 +78,8 @@ function detect_heroku_vars_changed {
 
   # desired new Heroku settings
   load_heroku_constants
+
+  # test whether desired Heroku settings equal current Heroku settings
   heroku_vars_changed=false
   while read line
   do
