@@ -49,13 +49,37 @@ function roboconf-passenger {
   touch tmp/restart.txt
 }
 
+function echo_cmd {
+  echo "\$ $*"
+  $*  
+}
+
+# Loads $HEROKU_CONSTANTS or exits
+function load_heroku_constants {
+  if [ -z "$HEROKU_CONSTANTS" ]; then
+    echo "Error: \$HEROKU_CONSTANTS is undefined"
+    echo "\$HEROKU_CONSTANTS should reference a file holding key=value pairs of Heroku configuration settings"
+    exit 1
+  elif [[ -f $HEROKU_CONSTANTS ]]; then
+    source $HEROKU_CONSTANTS
+  else
+    echo "Error: Failed to find $HEROKU_CONSTANTS"
+    exit 1
+  fi
+}
+
 # "Private" function called by run_heroku_config_if_settings_changed.
 # Sets the heroku_vars_changed variable to true/false depending on whether
 # the Heroku environment variables in $HEROKU_CONSTANTS differ from what
 # is currently configured for the Heroku app.
 function detect_heroku_vars_changed {
+  # current app settings on Heroku
   current_configs=$(heroku config --app "$app")
 
+  # desired new Heroku settings
+  load_heroku_constants
+
+  # test whether desired Heroku settings equal current Heroku settings
   heroku_vars_changed=false
   while read line
   do
