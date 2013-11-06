@@ -120,7 +120,7 @@ function run_heroku_config_if_settings_changed {
     echo "Skipping 'heroku config:add' because Heroku variables unchanged"
   else
     echo "Running 'heroku config:add' because Heroku variables have changed"
-    heroku config:add $HEROKU_CONFIG_ADD_CONSTANTS --app "$app"
+    #heroku config:add $HEROKU_CONFIG_ADD_CONSTANTS --app "$app"
   fi
 }
 
