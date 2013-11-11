@@ -137,3 +137,15 @@ Example: $0 hedgeye-reader
 EOF
   exit 1
 }
+
+function heroku_addon {
+  name="$1"
+  match=$(ruby -e "puts %x(heroku addons --app "$app").match(/$name/).to_s")
+
+  if [ '' == "$match" ]; then
+    echo "Installing '$name' because it's not yet installed"
+    echo_cmd heroku addons:add $name --app "$app"
+  else
+    echo "Not installing '$name' because it's already installed"
+  fi  
+}
