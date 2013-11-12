@@ -168,7 +168,7 @@ function update_submodules_and_commit_shas {
     echo "***************************************************************"
     echo "**********        Auto-updating submodules &         **********"
     echo "**********       pushing changes back to master      **********"
-    echo "**************************************************************"
+    echo "***************************************************************"
     git commit -a -m "auto-update all submodules"
     git push origin master
   fi  
