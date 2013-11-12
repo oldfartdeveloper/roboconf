@@ -160,3 +160,16 @@ function heroku_addon {
     echo "Not installing '$name' because it's already installed"
   fi  
 }
+
+function update_submodules_and_commit_shas {
+  echo_cmd git submodule update --remote --merge
+  git_status=$(git status)
+  if [[ "$git_status" == *"Changes not staged"* ]]; then
+    echo "***************************************************************"
+    echo "**********        Auto-updating submodules &         **********"
+    echo "**********       pushing changes back to master      **********"
+    echo "***************************************************************"
+    git commit -a -m "auto-update all submodules"
+    git push origin master
+  fi  
+}
