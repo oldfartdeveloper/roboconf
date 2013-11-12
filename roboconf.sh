@@ -137,3 +137,26 @@ Example: $0 hedgeye-reader
 EOF
   exit 1
 }
+
+function show_config_usage_and_exit {
+  cat <<EOF
+Usage: $0 heroku-app-name
+
+Function: Update Heroku configuration.
+
+Example: $0 hedgeye-labs
+EOF
+  exit 1
+}
+
+function heroku_addon {
+  name="$1"
+  match=$(ruby -e "puts %x(heroku addons --app "$app").match(/$name/).to_s")
+
+  if [ '' == "$match" ]; then
+    echo "Installing '$name' because it's not yet installed"
+    echo_cmd heroku addons:add $name --app "$app"
+  else
+    echo "Not installing '$name' because it's already installed"
+  fi  
+}
