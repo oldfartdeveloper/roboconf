@@ -170,6 +170,8 @@ function update_submodules_and_commit_shas {
     echo "**********       pushing changes back to master      **********"
     echo "***************************************************************"
     git commit -a -m "auto-update all submodules"
+    echo_cmd git show
+    echo_cmd git log
     git push -v origin master
   fi  
 }
