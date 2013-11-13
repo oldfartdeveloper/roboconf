@@ -172,6 +172,7 @@ function update_submodules_and_commit_shas {
     git commit -a -m "auto-update all submodules"
     echo_cmd git show
     echo_cmd git log
+    git pull origin master
     git push -v origin master
   fi  
 }
