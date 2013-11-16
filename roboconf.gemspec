@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Roboconf::VERSION
   spec.authors       = ["Scott Smith"]
   spec.email         = ["scottnelsonsmith@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Miscellaneous useful functions in bash that perform common development tasks }
+  spec.summary       = %q{Useful developer bash scripts}
   spec.homepage      = ""
   spec.license       = "MIT"
 
