@@ -9,7 +9,7 @@ class Roboconf
 
   def check_verbal(program_name)
     found = check(program_name)
-    puts "Program #{program_name} is #{found ? '' : 'not'} found"
+    puts "Program #{program_name} is#{found ? '' : 'not'} found"
     found
   end
 
@@ -34,13 +34,14 @@ class Roboconf
     echo_cmd "bundle install #{opts}"
   end
 
-=begin
+  def npm
+    exit 1 unless check_verbal 'node'
+    unless check_verbal 'npm'
+      echo_cmd 'npm install'
+    end
+  end
 
-def npm
-  check 'node'
-  check 'npm'
-  npm install
-end
+=begin
 
 def rails-activerecord
   bundle exec rake db:create
