@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/roboconf/roboconf'
+
+robo = Roboconf.new
+if robo.check(ARGV[0])
+  puts 'yes'
+else
+  puts 'no'
+  exit 1
+end
