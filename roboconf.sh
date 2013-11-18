@@ -1,3 +1,5 @@
+echo "Begin loading roboconf functions..."
+
 function roboconf-check {
   echo -n "checking for $1... "
   hash "$1" 2>&- || {
@@ -175,3 +177,5 @@ function update_submodules_and_commit_shas {
     git push -v origin master
   fi  
 }
+
+echo "Finished loading roboconf functions"
