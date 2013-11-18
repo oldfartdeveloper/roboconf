@@ -67,6 +67,7 @@ function load_heroku_constants {
     echo "\$HEROKU_CONSTANTS should reference a file holding key=value pairs of Heroku configuration settings"
     exit 1
   elif [[ -f $HEROKU_CONSTANTS ]]; then
+    echo "Sourcing $HEROKU_CONSTANTS"
     source $HEROKU_CONSTANTS
   else
     echo "Error: Failed to find $HEROKU_CONSTANTS"
@@ -79,11 +80,13 @@ function load_heroku_constants {
 # the Heroku environment variables in $HEROKU_CONSTANTS differ from what
 # is currently configured for the Heroku app.
 function detect_heroku_vars_changed {
+  echo "Starting detect_heroku_vars_changed"
+
   # current app settings on Heroku
   current_configs=$(heroku config --app "$app")
 
   # desired new Heroku settings
-  load_heroku_constants
+  echo_cmd load_heroku_constants
 
   # test whether desired Heroku settings equal current Heroku settings
   heroku_vars_changed=false
@@ -107,6 +110,7 @@ function detect_heroku_vars_changed {
 
 # runs 'heroku config:set' only if the Heroku configuration settings have changed
 function run_heroku_config_if_settings_changed {
+  echo "Starting run_heroku_config_if_settings_changed..."
   detect_heroku_vars_changed
   if ! $heroku_vars_changed; then
     echo "Skipping 'heroku config:add' because Heroku variables unchanged"
