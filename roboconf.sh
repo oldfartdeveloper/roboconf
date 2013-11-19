@@ -86,7 +86,7 @@ function detect_heroku_vars_changed {
   current_configs=$(heroku config --app "$app")
 
   # desired new Heroku settings
-  echo_cmd load_heroku_constants
+  load_heroku_constants
 
   # test whether desired Heroku settings equal current Heroku settings
   heroku_vars_changed=false
