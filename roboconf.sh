@@ -169,6 +169,7 @@ function heroku_addon {
 
 function update_submodules_and_commit_shas {
   git checkout master
+  git pull origin master
   echo_cmd git submodule update --remote --merge
   git_status=$(git status)
   if [[ "$git_status" == *"Changes not staged"* ]]; then
