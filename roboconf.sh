@@ -167,9 +167,13 @@ function heroku_addon {
   fi  
 }
 
-function update_submodules_and_commit_shas {
+function ensure_current_master {
   git checkout master
   git pull origin master
+}
+
+function update_submodules_and_commit_shas {
+  ensure_current_master
   echo_cmd git submodule update --remote --merge
   git_status=$(git status)
   if [[ "$git_status" == *"Changes not staged"* ]]; then
@@ -178,7 +182,6 @@ function update_submodules_and_commit_shas {
     echo "**********       pushing changes back to master      **********"
     echo "***************************************************************"
     git commit -a -m "auto-update all submodules"
-    git checkout master
     git push -v origin master
   fi  
 }
