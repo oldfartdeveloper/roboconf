@@ -208,8 +208,8 @@ function update_submodules_and_commit_shas {
   git_status=$(git status)
   if [[ "$git_status" == *"Changes not staged"* ]]; then
     echo "***************************************************************"
-    echo "        Auto-updating submodules &"
-    echo "        pushing changes back to $current_git_branch_name"
+    echo "   Auto-updating submodules &"
+    echo "   pushing changes back to $current_git_branch_name"
     echo "***************************************************************"
     git commit -a -m "auto-update all submodules"
     git push -v origin $current_git_branch_name
