@@ -184,13 +184,13 @@ function set_current_git_branch_name {
 function set_master_or_detached {
   set_current_git_branch_name
   if [[ "$current_git_branch_name" = "HEAD" ]]; then
-    echo "detached HEAD"
+    echo "Git currently has detached HEAD"
     master_or_detached=true
   elif [[ "$current_git_branch_name" = "master" ]]; then
-    echo "master branch"
+    echo "Git currently on master branch"
     master_or_detached=true
   else
-    echo "on non-master branch '$current_git_branch_name'"
+    echo "Git currently on non-master branch '$current_git_branch_name'"
     master_or_detached=false
   fi
 }
