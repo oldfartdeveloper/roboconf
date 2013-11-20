@@ -168,6 +168,7 @@ function heroku_addon {
 }
 
 function ensure_current_master {
+  echo "pulling from origin master"
   git checkout master
   git pull origin master
   current_git_branch_name=master
