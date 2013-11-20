@@ -173,12 +173,12 @@ function ensure_current_master {
   current_git_branch_name=master
 }
 
-function current_git_branch_name {
+function get_current_git_branch_name {
   git rev-parse --abbrev-ref HEAD
 }
 
 function set_current_git_branch_name {
-  current_git_branch_name=$(current_git_branch_name)
+  current_git_branch_name=$(get_current_git_branch_name)
 }
 
 function set_master_or_detached {
