@@ -167,11 +167,19 @@ function heroku_addon {
   fi  
 }
 
-function ensure_current_master {
-  echo "pulling from origin master"
+function checkout_git_master_branch {
+  echo "Checking out Git master branch"
   git checkout master
-  git pull origin master
   current_git_branch_name=master
+}
+
+function update_git_branch {
+  echo "Pulling latest changes from origin $current_git_branch_name"
+  git pull origin $current_git_branch_name
+}
+
+function update_git_submodules {
+  echo_cmd git submodule update --remote --merge
 }
 
 function get_current_git_branch_name {
@@ -182,31 +190,12 @@ function set_current_git_branch_name {
   current_git_branch_name=$(get_current_git_branch_name)
 }
 
-function set_master_or_detached {
-  set_current_git_branch_name
-  if [[ "$current_git_branch_name" = "HEAD" ]]; then
-    echo "Git currently has detached HEAD"
-    master_or_detached=true
-  elif [[ "$current_git_branch_name" = "master" ]]; then
-    echo "Git currently on master branch"
-    master_or_detached=true
-  else
-    echo "Git currently on non-master branch '$current_git_branch_name'"
-    master_or_detached=false
-  fi
-}
-
-function ensure_current_master_if_master_or_detached {
-  set_master_or_detached
-  if [[ $master_or_detached = "true" ]]; then
-    ensure_current_master
-  fi
-}
-
-function update_submodules_and_commit_shas {
-  ensure_current_master_if_master_or_detached
-  echo_cmd git submodule update --remote --merge
+function set_git_status {
   git_status=$(git status)
+}
+
+function commit_and_push_submodule_sha_updates {
+  set_git_status
   if [[ "$git_status" == *"Changes not staged"* ]]; then
     echo "***************************************************************"
     echo "   Auto-updating submodules &"
@@ -215,6 +204,32 @@ function update_submodules_and_commit_shas {
     git commit -a -m "auto-update all submodules"
     git push -v origin $current_git_branch_name
   fi  
+}
+
+function checkout_git_master_if_detached_head {
+  set_current_git_branch_name
+  if [[ "$current_git_branch_name" = "HEAD" ]]; then
+    echo "Git currently has detached HEAD"
+    checkout_git_master_branch
+  fi
+}
+
+function update_submodules_and_commit_shas {
+  set_current_git_branch_name
+  checkout_git_master_if_detached_head
+  update_git_branch
+  update_git_submodules
+  commit_and_push_submodule_sha_updates
+}
+
+# We currently auto-update submodule SHAs only as part of the Jenkins/CI process
+# We could add auto-updating as an option when releasing to Heroku staging
+function update_submodules_and_commit_shas_if_detached_head {
+  set_current_git_branch_name
+  if [[ "$current_git_branch_name" = "HEAD" ]]; then
+    echo "Git currently has detached HEAD"
+    update_submodules_and_commit_shas
+  fi
 }
 
 echo "Finished loading roboconf functions"
