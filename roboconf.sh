@@ -214,11 +214,15 @@ function checkout_git_master_if_detached_head {
   fi
 }
 
-function update_submodules_and_commit_shas {
+function update_submodules {
   set_current_git_branch_name
   checkout_git_master_if_detached_head
   update_git_branch
   update_git_submodules
+}
+
+function update_submodules_and_commit_shas {
+  update_submodules
   commit_and_push_submodule_sha_updates
 }
 
