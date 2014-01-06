@@ -179,6 +179,9 @@ function update_git_branch {
 }
 
 function update_git_submodules {
+  echo "***************************************************************"
+  echo "   Auto-updating submodules"
+  echo "***************************************************************"
   echo_cmd git submodule update --remote --merge
 }
 
@@ -192,6 +195,10 @@ function set_current_git_branch_name {
 
 function set_git_status {
   git_status=$(git status)
+}
+
+function set_git_show {
+  git_show=$(git show)
 }
 
 function set_git_submodule_dirs {
@@ -209,6 +216,9 @@ function git_add_and_commit_submodule_dirs {
   git_add_submodule_dirs
   set_git_status
   if [[ "$git_status" == *"Changes to be committed"* ]]; then
+    echo "***************************************************************"
+    echo "   Committing submodule auto-updates"
+    echo "***************************************************************"
     git commit -m "auto-update all submodules"
   fi
 }
@@ -216,12 +226,14 @@ function git_add_and_commit_submodule_dirs {
 function commit_and_push_submodule_sha_updates {
   set_git_status
   if [[ "$git_status" == *"Changes not staged"* ]]; then
-    echo "***************************************************************"
-    echo "   Auto-updating submodules &"
-    echo "   pushing changes back to $current_git_branch_name"
-    echo "***************************************************************"
     git_add_and_commit_submodule_dirs
-    git push -v origin $current_git_branch_name
+    set_git_show
+    if [[ "$git_show" == *"auto-update all submodules"* ]]; then
+      echo "***************************************************************"
+      echo "   Pushing changes back to $current_git_branch_name"
+      echo "***************************************************************"
+      git push -v origin $current_git_branch_name
+    fi
   fi  
 }
 
