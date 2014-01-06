@@ -194,6 +194,22 @@ function set_git_status {
   git_status=$(git status)
 }
 
+function set_git_submodule_dirs {
+  git_submodule_dirs=( $(cat .gitmodules | grep 'path = ' | sed 's/path = //') )
+}
+
+function git_add_submodule_dirs {
+  set_git_submodule_dirs
+  for submodule_dir in "${git_submodule_dirs[@]}"; do
+    git add $submodule_dir
+  done
+}
+
+function git_add_and_commit_submodule_dirs {
+  git_add_submodule_dirs
+  git commit -m "auto-update all submodules"
+}
+
 function commit_and_push_submodule_sha_updates {
   set_git_status
   if [[ "$git_status" == *"Changes not staged"* ]]; then
@@ -201,7 +217,7 @@ function commit_and_push_submodule_sha_updates {
     echo "   Auto-updating submodules &"
     echo "   pushing changes back to $current_git_branch_name"
     echo "***************************************************************"
-    git commit -a -m "auto-update all submodules"
+    git_add_and_commit_submodule_dirs
     git push -v origin $current_git_branch_name
   fi  
 }
