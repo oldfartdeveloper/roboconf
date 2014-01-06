@@ -207,7 +207,10 @@ function git_add_submodule_dirs {
 
 function git_add_and_commit_submodule_dirs {
   git_add_submodule_dirs
-  git commit -m "auto-update all submodules"
+  set_git_status
+  if [[ "$git_status" == *"Changes to be committed"* ]]; then
+    git commit -m "auto-update all submodules"
+  fi
 }
 
 function commit_and_push_submodule_sha_updates {
