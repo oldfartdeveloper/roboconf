@@ -9,7 +9,12 @@ function roboconf-check {
   echo 'yes'
 }
 
+# DEPRECATED - Renamed check_out_master_project_shas
 function roboconf-git-modules {
+  check_out_master_project_shas
+}
+
+function check_out_master_project_shas {
   roboconf-check git
   git submodule init
   git submodule sync
