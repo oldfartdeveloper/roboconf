@@ -14,6 +14,10 @@ function roboconf-git-modules {
   check_out_master_project_shas
 }
 
+# Since the developer may not want to merge the latest SHAs during his development,
+# this function only checks out what the current parent project "thinks" are the
+# current submodule SHAs.  To retrieve the latest SHAs (from the submodule
+# point of view), use function 'update_git_submodules'.
 function check_out_master_project_shas {
   roboconf-check git
   git submodule init
@@ -183,6 +187,8 @@ function update_git_branch {
   git pull origin $current_git_branch_name
 }
 
+# Retrieves the latest submodule SHAs from git.  If you only want to
+# checkout the parent project's current SHAs, use function 'check_out_master_project_shas'
 function update_git_submodules {
   echo "***************************************************************"
   echo "   Auto-updating submodules"
