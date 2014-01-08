@@ -11,10 +11,7 @@ function roboconf-check {
 
 # DEPRECATED - Renamed check_out_master_project_shas
 function roboconf-git-modules {
-  roboconf-check git
-  git submodule init
-  git submodule sync
-  git submodule update
+  check_out_master_project_shas
 }
 
 function check_out_master_project_shas {
