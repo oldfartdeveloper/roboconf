@@ -9,11 +9,6 @@ function roboconf-check {
   echo 'yes'
 }
 
-# DEPRECATED - Renamed check_out_master_project_shas
-function roboconf-git-modules {
-  check_out_master_project_shas
-}
-
 # Since the developer may not want to merge the latest SHAs during his development,
 # this function only checks out what the current parent project "thinks" are the
 # current submodule SHAs.  To retrieve the latest SHAs (from the submodule
