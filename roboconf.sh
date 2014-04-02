@@ -100,10 +100,11 @@ function detect_heroku_vars_changed {
     new_value="$( cut -d '=' -f 2- <<< $line )"
     new_value=`sed -E -e "s/(^'|'$)//g" <<< $new_value` # strip leading/trailing 's
     new_value=`sed -E -e "s/(^\"|\"$)//g" <<< $new_value` # strip leading/trailing "s
-    if [[ $new_key =~ 'HEROKU_CONFIG_ADD_CONSTANTS' || $new_key == \#* || $new_key == '' ]]; then
-      continue   # ignore this script-only variable; it's not a Heroku config setting
-      # script/prep-release also does not differentiate between heroku variables, comments, and blank lines
-      # skip any lines that start with '#' (comments) or are blank
+    if [[ $new_key =~ 'HEROKU_CONFIG_ADD_CONSTANTS' # ignore this script-only variable; it's not a Heroku config setting
+        || $new_key == \#* # ignore lines that start with '#' (comments)
+        || $new_key == '' # ignore blank lines
+        ]]; then
+      continue
     fi
     if [[ "$current_configs" == *"$new_key"* && "$current_configs" == *"$new_value"* ]]; then
       echo "Key '$new_key' already has value '$new_value'"
