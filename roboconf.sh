@@ -286,7 +286,7 @@ function update_submodules_and_commit_shas_if_detached_head {
 # handle db/schema.rb differently.
 function dump_schema {
     if ! [[ "$TEST_ENVIRONMENT" == 'cruise' ]]; then
-      rake db:schema:dump
+      bundle exec rake db:schema:dump
     fi
 }
 
