@@ -276,4 +276,18 @@ function update_submodules_and_commit_shas_if_detached_head {
   fi
 }
 
+# Since database migration is performed in CMS, the db/schema.rb file
+# for non-CMS applications can get out of sync.  The ./configure file
+# in such projects should invoke this method to make sure that the
+# db/schema.rb file is updated periodically.
+#
+# The 'cruise' check is to allow Jenkins to not do this, since
+# non-CMS applications _do_ have their own databases and therefore
+# handle db/schema.rb differently.
+function dump_schema {
+    if ! [[ "$TEST_ENVIRONMENT" == 'cruise' ]]; then
+      rake db:schema:dump
+    fi
+}
+
 echo "Finished loading roboconf functions"
