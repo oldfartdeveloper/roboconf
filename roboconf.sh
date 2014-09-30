@@ -176,8 +176,6 @@ function heroku_addon {
   fi  
 }
 
-# Check out the current branch.  Assumes the $current_git_branch_name
-# has been assigned; if it has not, then assigns it to "master"
 function checkout_git_branch {
   set_current_git_branch_name
   echo "Checking out Git $current_git_branch_name branch"
