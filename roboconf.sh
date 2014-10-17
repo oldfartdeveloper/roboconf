@@ -270,6 +270,8 @@ function commit_and_push_submodule_sha_updates {
         echo "***************************************************************"
         git push -v origin $current_git_branch_name
       fi
+    else
+      echo "No updated submodule SHAs were found to commit to parent"
     fi
   else
     echo "DISABLED: Committing and pushing submodule SHA updates"
