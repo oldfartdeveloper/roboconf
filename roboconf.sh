@@ -279,25 +279,6 @@ function commit_and_push_submodule_sha_updates {
   fi
 }
 
-function update_submodules_and_commit_shas {
-  update_submodules
-  if [[ "$current_git_branch_name" = "HEAD" ]]; then
-    commit_and_push_submodule_sha_updates
-  else
-    echo "DISABLED: Auto-updating submodules and SHA committing"
-  fi
-}
-
-# We currently auto-update submodule SHAs only as part of the Jenkins/CI process
-# We could add auto-updating as an option when releasing to Heroku staging
-function update_submodules_and_commit_shas_if_detached_head {
-  set_current_git_branch_name
-  if [[ "$current_git_branch_name" = "HEAD" ]]; then
-    echo "Git currently has detached HEAD"
-    update_submodules_and_commit_shas
-  fi
-}
-
 # ***********************************************************
 # ******* END CODE TO SUPPORT AUTO SUBMODULE UPDATING *******
 # ***********************************************************
