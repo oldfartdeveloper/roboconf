@@ -207,6 +207,9 @@ function checkout_git_branch {
 # from to be 'origin'.  Whether it runs or not depends upon the setting of the Jenkins
 # environment variable $AUTO_UPDATE_SUBMODULE_SHAS_ON_MASTER which must be set to 'true';
 # any other value will cause the submodule update to NOT occur.
+#
+# See https://github.com/hedgeyedev/hedgeye_utilities_for_jenkins/wiki/Whether-to-Auto-Update-Submodule-SHAs
+# for more information on turning $AUTO_UPDATE_SUBMODULE_SHAS_ON_MASTER on and off.
 function update_submodules {
 
   if [ "$AUTO_UPDATE_SUBMODULE_SHAS_ON_MASTER" = "true" ]; then
