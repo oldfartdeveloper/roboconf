@@ -259,6 +259,7 @@ function git_add_and_commit_submodule_dirs {
 }
 
 function commit_and_push_submodule_sha_updates {
+  echo "Starting commit_and_push_submodule_sha_updates..."
   if [ "$AUTO_UPDATE_SUBMODULE_SHAS_ON_MASTER" = "true" ]; then
     set_git_status
     if [[ "$git_status" == *"Changes not staged"* ]]; then
