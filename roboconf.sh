@@ -59,7 +59,7 @@ function roboconf-passenger {
 
 function echo_cmd {
   echo "\$ $*"
-  $*  
+  $*
 }
 
 function fire_up_heroku_app {
@@ -173,7 +173,7 @@ function heroku_addon {
     echo_cmd heroku addons:add $name --app "$app"
   else
     echo "Not installing '$name' because it's already installed"
-  fi  
+  fi
 }
 
 # Since database migration is performed in CMS, the db/schema.rb file
@@ -189,103 +189,5 @@ function dump_schema {
       bundle exec rake db:schema:dump
     fi
 }
-
-# ***********************************************************
-# ****** BEGIN CODE TO SUPPORT AUTO SUBMODULE UPDATING ******
-# ***********************************************************
-
-function checkout_git_branch {
-  set_current_git_branch_name
-  echo "Checking out Git $current_git_branch_name branch"
-  git checkout $current_git_branch_name
-}
-
-# Retrieves the latest submodule SHAs from git.  If you only want to
-# checkout the parent project's current SHAs, use function 'check_out_current_branch_project_shas'
-#
-# NOTE: this is only intended for Jenkins use; it presumes the 'git remote' to retrieve
-# from to be 'origin'.  Whether it runs or not depends upon the setting of the Jenkins
-# environment variable $AUTO_UPDATE_SUBMODULE_SHAS_ON_MASTER which must be set to 'true';
-# any other value will cause the submodule update to NOT occur.
-#
-# See https://github.com/hedgeyedev/hedgeye_utilities_for_jenkins/wiki/Whether-to-Auto-Update-Submodule-SHAs
-# for more information on turning $AUTO_UPDATE_SUBMODULE_SHAS_ON_MASTER on and off.
-function update_submodules {
-
-  if [ "$AUTO_UPDATE_SUBMODULE_SHAS_ON_MASTER" = "true" ]; then
-    echo "***************************************************************"
-    echo "   Auto-updating submodules for branch '$current_git_branch_name'"
-    echo "***************************************************************"
-    echo_cmd git submodule update --remote --merge
-  else
-    echo "DISABLED: Auto-updating submodules"
-  fi
-}
-
-function get_current_git_branch_name {
-  git rev-parse --abbrev-ref HEAD
-}
-
-function set_current_git_branch_name {
-  current_git_branch_name=$(get_current_git_branch_name)
-  echo "The current branch is '$current_git_branch_name'"
-}
-
-function set_git_status {
-  git_status=$(git status)
-}
-
-function set_git_show {
-  git_show=$(git show)
-}
-
-function set_git_submodule_dirs {
-  git_submodule_dirs=( $(cat .gitmodules | grep 'path = ' | sed 's/path = //') )
-}
-
-function git_add_submodule_dirs {
-  set_git_submodule_dirs
-  for submodule_dir in "${git_submodule_dirs[@]}"; do
-    git add $submodule_dir
-  done
-}
-
-function git_add_and_commit_submodule_dirs {
-  git_add_submodule_dirs
-  set_git_status
-  if [[ "$git_status" == *"Changes to be committed"* ]]; then
-    echo "***************************************************************"
-    echo "   Committing submodule auto-updates"
-    echo "***************************************************************"
-    git commit -m "auto-update all submodules"
-  fi
-}
-
-function commit_and_push_submodule_sha_updates {
-  echo "Starting commit_and_push_submodule_sha_updates..."
-  if [ "$AUTO_UPDATE_SUBMODULE_SHAS_ON_MASTER" = "true" ]; then
-    set_git_status
-    if [[ "$git_status" == *"Changes not staged"* ]]; then
-      git_add_and_commit_submodule_dirs
-      set_git_show
-      if [[ "$git_show" == *"auto-update all submodules"* ]]; then
-        echo "***************************************************************"
-        echo "   Pushing changes back to $current_git_branch_name"
-        echo "***************************************************************"
-        git push -v origin $current_git_branch_name
-      else
-        echo "No updated submodule SHAs were found to commit to parent"
-      fi
-    else
-      echo "No unstaged changes to commit"
-    fi
-  else
-    echo "DISABLED: Committing and pushing submodule SHA updates"
-  fi
-}
-
-# ***********************************************************
-# ******* END CODE TO SUPPORT AUTO SUBMODULE UPDATING *******
-# ***********************************************************
 
 echo "Finished loading roboconf functions"
