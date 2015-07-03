@@ -11,6 +11,9 @@ function roboconf-check {
   echo 'yes'
 }
 
+# Since the developer may not want to merge the latest SHAs during his development,
+# this function only checks out what the current parent project "thinks" are the
+# current submodule SHAs.
 function check_out_current_project_shas {
   roboconf-check git
   git submodule init
