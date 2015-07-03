@@ -11,15 +11,11 @@ function roboconf-check {
   echo 'yes'
 }
 
-# Since the developer may not want to merge the latest SHAs during his development,
-# this function only checks out what the current parent project "thinks" are the
-# current submodule SHAs.  To retrieve the latest SHAs (from the submodule
-# point of view), use function 'update_git_submodules'.
 function check_out_current_project_shas {
   roboconf-check git
   git submodule init
   git submodule sync
-  git submodule update
+  git submodule update --remote
 }
 
 function roboconf-bundler {
