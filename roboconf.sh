@@ -189,4 +189,14 @@ function dump_schema {
     fi
 }
 
+# The following two routines are needed by a script/release script:
+function get_current_git_branch_name {
+  git rev-parse --abbrev-ref HEAD
+}
+
+function set_current_git_branch_name {
+  current_git_branch_name=$(get_current_git_branch_name)
+  echo "The current branch is '$current_git_branch_name'"
+}
+
 echo "Finished loading roboconf functions"
