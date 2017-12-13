@@ -22,13 +22,12 @@ function check_out_current_project_shas {
 }
 
 function roboconf-bundler {
-  bundler_version="$1"
-  opts="$2"
+  opts="$1"
 
   roboconf-check rvm
   roboconf-check gem
   # Assumes rvm
-  gem install bundler --version "$bundler_version" --no-rdoc --no-ri
+  gem install bundler --no-rdoc --no-ri
   bundle install $opts
 }
 
